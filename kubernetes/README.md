@@ -12,6 +12,12 @@ repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
 
+yum install -y yum-utils
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum update -y && yum install docker-ce -y
+systemctl enable --now docker
+
+
 Step 2: Install kubelet, kubeadm, and kubectl
 
 yum install -y kubelet kubeadm kubectl
@@ -61,5 +67,36 @@ swapoff -a
 
 # Deploy a Kubernetes Cluster
 
+Step 1: Create Cluster with kubeadm
+kubeadm init --apiserver-advertise-address=192.168.10.201 --pod-network-cidr=172.16.0.0/16
 
+Step 2: Manage Cluster as Regular User
+To start using the cluster you need to run it as a regular user by typing:
 
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Step 3: Set Up Pod Network
+
+A Pod Network allows nodes within the cluster to communicate. There are several available Kubernetes networking options. Use the following command to install the calico pod network add-on:
+
+kubectl apply -f https://docs.projectcalico.org/v3.10/manifests/calico.yaml
+
+Step 4: Check Status of Cluster
+#Thông tin cluster
+kubectl cluster-info
+#Các node trong cluster
+kubectl get nodes
+#Các pod đang chạy trong tất cả các namespace
+kubectl get pods --all-namespaces
+kubectl get pods -A
+
+Step 5: Join Worker Node to Cluster
+Trên master node gõ lệnh sau để lấy token
+
+kubeadm token create --print-join-command
+
+kubeadm join 192.168.10.201:6443 --token 7wfnrg.r9r3pnw3i7t7ahl2     --discovery-token-ca-cert-hash sha256:378355124d80d0f1a60f7d3ac7b1e32c949e891af3407275654179bab3c2e8c3 
+
+Sau khi lấy được token thì gõ lên các worker nodes để join vào kubernetes cluster.
