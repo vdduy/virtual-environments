@@ -68,13 +68,14 @@ swapoff -a
 ```
 
 **Step 8: Add cluster into hosts**
+```
 cat >>/etc/hosts<<EOF
 192.168.10.201 k8s-master
 192.168.10.202 k8s-worker01
 192.168.10.203 k8s-worker02
 192.168.10.204 k8s-worker03
 EOF
-
+```
 
 # Deploy a Kubernetes Cluster
 
