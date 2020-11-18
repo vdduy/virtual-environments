@@ -1,6 +1,6 @@
 # Steps for Installing Kubernetes on CentOS 7
 
-**Step 1: Configure Kubernetes Repository
+**Step 1: Configure Kubernetes Repository**
 ```
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -13,7 +13,7 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 EOF
 ```
 
-**Step 2: Install docker, kubelet, kubeadm, and kubectl
+**Step 2: Install docker, kubelet, kubeadm, and kubectl**
 ```
 yum install -y yum-utils
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -24,7 +24,7 @@ yum install -y kubelet kubeadm kubectl
 systemctl enable --now kubelet
 ```
 
-**Step 4: Configure Firewall
+**Step 4: Configure Firewall**
 
 On the Master Node enter:
 ```
@@ -44,7 +44,7 @@ sudo firewall-cmd --permanent --add-port=10255/tcp
 firewall-cmd --reload
 ```
 
-**Step 5: Update Iptables Settings
+**Step 5: Update Iptables Settings**
 
 Set the net.bridge.bridge-nf-call-iptables to ‘1’ in your sysctl config file. This ensures that packets are properly processed by IP tables during filtering and port forwarding.
 ```
@@ -55,19 +55,19 @@ EOF
 sysctl --system
 ```
 
-**Step 6: Disable SELinux
+**Step 6: Disable SELinux**
 ```
 setenforce 0
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 ```
 
-**Step 7: Disable SWAP
+**Step 7: Disable SWAP**
 ```
 sed -i '/swap/d' /etc/fstab
 swapoff -a
 ```
 
-**Step 8: Add cluster into hosts
+**Step 8: Add cluster into hosts**
 cat >>/etc/hosts<<EOF
 192.168.10.201 k8s-master
 192.168.10.202 k8s-worker01
@@ -78,7 +78,7 @@ EOF
 
 # Deploy a Kubernetes Cluster
 
-**Step 1: Create Cluster with kubeadm
+**Step 1: Create Cluster with kubeadm**
 ```
 kubeadm init --apiserver-advertise-address=192.168.10.201 --pod-network-cidr=172.16.0.0/16
 ```
@@ -90,14 +90,14 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-**Step 3: Set Up Pod Network
+**Step 3: Set Up Pod Network**
 
 A Pod Network allows nodes within the cluster to communicate. There are several available Kubernetes networking options. Use the following command to install the calico pod network add-on:
 ```
 kubectl apply -f https://docs.projectcalico.org/v3.10/manifests/calico.yaml
 ```
 
-**Step 4: Check Status of Cluster
+**Step 4: Check Status of Cluster**
 ```
 #Thông tin cluster
 kubectl cluster-info
@@ -108,7 +108,7 @@ kubectl get pods --all-namespaces
 kubectl get pods -A
 ```
 
-**Step 5: Join Worker Node to Cluster
+**Step 5: Join Worker Node to Cluster**
 Trên master node gõ lệnh sau để lấy token
 ```
 kubeadm token create --print-join-command
