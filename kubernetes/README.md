@@ -1,3 +1,9 @@
+Table of contents
+
+[Installing Kubernetes](#steps-for-installing-kubernetes-on-centos-7)
+
+
+
 # Steps for Installing Kubernetes on CentOS 7
 
 **Step 1: Configure Kubernetes Repository**
