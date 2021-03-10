@@ -8,9 +8,9 @@ sudo vi /etc/hosts
 172.16.14.104 k8s-worker01
 172.16.14.105 k8s-worker02
 172.16.14.106 k8s-worker03
-
-Virtual IP for Kubernetes API: 172.16.14.100:8443
 ```
+Virtual IP for Kubernetes API: 172.16.14.100:8443
+
 **Pre-flight**
 
 Turn off swap for all servers
