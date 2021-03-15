@@ -154,7 +154,7 @@ sudo vi /etc/haproxy/haproxy.cfg
 # Configure HAProxy for Kubernetes API Server
 #---------------------------------------------------------------------
 listen stats
-  bind    *:9000
+  bind    172.16.14.100:9000
   mode    http
   stats   enable
   stats   hide-version
@@ -166,7 +166,7 @@ listen stats
 
 ############## Configure HAProxy Secure Frontend #############
 frontend k8s-api-https-proxy
-    bind *:8443
+    bind 172.16.14.100:8443
     mode tcp
     tcp-request inspect-delay 5s
     tcp-request content accept if { req.ssl_hello_type 1 }
